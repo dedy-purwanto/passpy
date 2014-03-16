@@ -11,9 +11,20 @@ uppercase_length = 8
 p = getpass()
 confirm = getpass()
 
+length = None
+
+if len(sys.argv) > 1:
+    try:
+        length = int(sys.argv[1])
+    except ValueError:
+        length = None
+
 if p == confirm:
     p = '%s%s' % (p, SALT)
     p = sha1(p).hexdigest()
+
+    p = p[:length - len(suffix)]
+    
     p = '%s%s' % (p, suffix)
 
 
