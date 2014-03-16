@@ -4,14 +4,21 @@ import os, sys
 from hashlib import sha1
 from getpass import getpass
 
+def cap_first(pwd):
+    new_pwd = []
+    caps = False
+    for s in pwd:
+        new_pwd.append(s if s.isdigit() or caps else s.upper())
+        if not s.isdigit(): caps = True
+    return ''.join(new_pwd)
+
 SALT = 'abdul'
 suffix = '$#'
-uppercase_length = 8
 
 p = getpass()
 confirm = getpass()
 
-length = None
+length = 99999
 
 if len(sys.argv) > 1:
     try:
@@ -28,7 +35,11 @@ if p == confirm:
     p = '%s%s' % (p, suffix)
 
 
+    uppercase_length = 8
     p = "%s%s" % (p[:uppercase_length].upper(), p[uppercase_length:])
+
+    #p = cap_first(p)
+
     clip = os.popen('pbcopy', 'w')
     clip.write(p)
     clip.close()
