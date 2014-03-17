@@ -33,13 +33,17 @@ def get_salt():
 parser = argparse.ArgumentParser()
 parser.add_argument('-n', '--new', 
         help="Confirmation mode (good when you're creating a new password)", action='store_true')
-parser.add_argument('-s', '--salt', help='Custom salt')
+parser.add_argument('-s', '--salt', help='Custom salt', action='store_true')
 parser.add_argument('-l', '--length', help='Set final length of the password', type=int)
 parser.add_argument('-o', '--out', help='Output generated pass', action='store_true')
 args = parser.parse_args()
 
-salt = args.salt if args.salt else get_salt()
 length = args.length - 1 if args.length else 9999
+if not args.salt:
+    salt = get_salt()
+else:
+    salt = getpass("Enter salt: ")
+
 p = getpass("Enter your phrase: ")
 
 if args.new:
