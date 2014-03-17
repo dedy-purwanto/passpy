@@ -5,8 +5,9 @@ from hashlib import sha1
 from getpass import getpass
 import argparse
 
-SUFFIX = '$#'
+SUFFIX = '$#' # Additional punctuation to avoid dumb bruteforcer
 
+# Capitalize first alphabet
 def cap_first(pwd):
     new_pwd = []
     caps = False
@@ -15,6 +16,8 @@ def cap_first(pwd):
         if not s.isdigit(): caps = True
     return ''.join(new_pwd)
 
+# Default salt is stored in home dir
+# Create if not exists
 def get_salt():
     filename = '%s/.saltpass' % os.path.expanduser('~')
     try:
@@ -27,40 +30,32 @@ def get_salt():
     f = open(filename, 'r')
     for s in f: return s
 
-
 parser = argparse.ArgumentParser()
-parser.add_argument('-n', '--new', help='Generate-mode', action='store_true')
+parser.add_argument('-n', '--new', 
+        help="Confirmation mode (good when you're creating a new password)", action='store_true')
 parser.add_argument('-s', '--salt', help='Custom salt')
-parser.add_argument('-l', '--length', help='Set final length', type=int)
+parser.add_argument('-l', '--length', help='Set final length of the password', type=int)
 parser.add_argument('-o', '--out', help='Output generated pass', action='store_true')
-
 args = parser.parse_args()
 
 salt = args.salt if args.salt else get_salt()
 length = args.length - 1 if args.length else 9999
+p = getpass("Enter your phrase: ")
 
-p = getpass()
 if args.new:
-    confirm = getpass()
+    confirm = getpass("Confirm your phrase: ")
     if p != confirm:
-        sys.stdout.write("Password not matched!\n")
+        sys.stdout.write("Phrase not matched!\n")
         exit()
 
 p = '%s%s' % (p, salt)
 p = sha1(p).hexdigest()
-
 p = p[:length - len(SUFFIX)]
-
 p = '%s%s' % (p, SUFFIX)
-
-#uppercase_length = 8
-#p = "%s%s" % (p[:uppercase_length].upper(), p[uppercase_length:])
-
 p = cap_first(p)
 
 clip = os.popen('pbcopy', 'w')
 clip.write(p)
 clip.close()
 
-if args.out:
-    print p
+if args.out: print p
