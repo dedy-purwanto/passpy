@@ -8,7 +8,7 @@ phrase.
 
 To create a new password, run:
 
-```pass.py -n```
+    pass.py -n
 
 At first it will find a salt file at `~/.saltpass`, if not exists, it
 will ask you for a default salt, but you can always customize the salt
@@ -32,13 +32,13 @@ You can also combine this with `-n` option.
 In the case of password length-limit, you can pass `-l <length>`
 argument to set the final length of the password, for example:
 
-```pass.py -l 10```
+    pass.py -l 10
 
 Todo:
 ------
 
-    * Confirm custom salt on `-n` mode.
-    * Make hash algorithm customizable
-    * Make SUFFIX customizable
-    * Change `.saltpass` filename to something more relevant
-    * Support clipboard on Windows and Linux machines
+* Confirm custom salt on `-n` mode.
+* Make hash algorithm customizable
+* Make SUFFIX customizable
+* Change `.saltpass` filename to something more relevant
+* Support clipboard on Windows and Linux machines
