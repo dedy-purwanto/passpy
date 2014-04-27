@@ -42,3 +42,4 @@ Todo:
 * Make SUFFIX customizable
 * Change `.saltpass` filename to something more relevant
 * Support clipboard on Windows and Linux machines
+* Add manual to put passpy on zshrc/bashrc alias
